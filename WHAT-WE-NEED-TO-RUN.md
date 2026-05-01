@@ -93,7 +93,7 @@ Without these headers the browser will block every call before it reaches our co
 
 ## Test scenarios we'll run together
 
-1. **Happy path**: `GET .../<id>` returns a populated contact → page renders banner from `CustomField1`, hero text from expanded `CustomField2`, image from `CustomField3` (or fallback), footer from name + `CustomField5`.
+1. **Happy path**: `POST .../JsonServices.aspx?f=<GetContactFn>` with body `{ "Id": "<id>" }` returns a populated contact → page renders banner from `CustomField1`, hero text from expanded `CustomField2`, image from `CustomField3` (or fallback), footer from name + `CustomField5`.
 2. **Bad id**: response has `ErrorCode: "1"` and `Result: "Contact not found"` → page shows the error message verbatim.
 3. **Missing API key**: response should be a non-zero `ErrorCode` with a clear `Result` string (e.g. `"Invalid ApiKey"`).
 4. **Lead submission**: visitor fills the on-page form → app POSTs `CreateContact` → contact appears in the CRM with `FirstName`, `LastName`, `EMail`, `PhoneNo` populated and `CustomField1` containing the visitor's free-text message.

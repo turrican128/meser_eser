@@ -27,7 +27,10 @@ export function useContact(id) {
       })
       .catch((err) => {
         if (cancelled) return;
-        const message = err.message || 'שגיאה בטעינת הנתונים';
+        const message =
+          err?.name === 'ApiConfigError'
+            ? 'שגיאת תצורה פנימית. פנה למנהל המערכת.'
+            : err.message || 'שגיאה בטעינת הנתונים';
         setState((prev) => (prev.id === id ? { ...prev, error: message, loading: false } : prev));
       });
 
