@@ -1,0 +1,15 @@
+{
+  "ContactListName": "Demo",
+  "FirstName": "דניאל",
+  "LastName": "אברהם",
+  "EMail": "daniel@example.com",
+  "PhoneNo": "052-9876543",
+  "Address": "רחוב דיזנגוף 45",
+  "City": "תל אביב",
+  "Zipcode": "6433201",
+  "CustomField1": "פתיחה חגיגית: בית קפה ארטיזן",
+  "CustomField2": "בית קפה אינטימי המתמחה בקפה ספציאלטי, מאפים ביתיים וארוחות בוקר עשירות. אווירה רגועה, ספרים, מוזיקה שקטה ופינת עבודה לפרילנסרים.",
+  "CustomField3": "",
+  "CustomField4": "cafe",
+  "CustomField5": "info@artisancafe.co.il"
+}
