@@ -1,0 +1,15 @@
+{
+  "ContactListName": "Demo",
+  "FirstName": "יעל",
+  "LastName": "כהן",
+  "EMail": "yael@example.com",
+  "PhoneNo": "050-1234567",
+  "Address": "רחוב הרצל 1",
+  "City": "תל אביב",
+  "Zipcode": "6100000",
+  "CustomField1": "מבצע השקה: סטודיו יוגה בוטיק",
+  "CustomField2": "סטודיו יוגה בוטיק במרכז תל אביב, מתמחה בהרפיה, נשימות ומדיטציה. שיעורים בקבוצות קטנות עם מורים מוסמכים, אווירה ביתית וחבילות מנויים גמישות.",
+  "CustomField3": "",
+  "CustomField4": "fitness",
+  "CustomField5": "owner@yogastudio.co.il"
+}

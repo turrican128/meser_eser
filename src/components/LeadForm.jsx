@@ -1,32 +1,62 @@
 import { useState } from 'react';
+import { createContact } from '../services/api';
+
+const initialForm = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  freeText: '',
+};
 
 export default function LeadForm() {
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    freeText: '',
-  });
+  const [form, setForm] = useState(initialForm);
+  const [submitting, setSubmitting] = useState(false);
+  const [status, setStatus] = useState(null); // { kind: 'success' | 'error', message: string }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.phone) {
-      alert('נא למלא את כל שדות החובה');
+    setStatus(null);
+
+    if (!form.firstName || !form.lastName || !form.email || !form.phone) {
+      setStatus({ kind: 'error', message: 'נא למלא את כל שדות החובה' });
       return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(form.email)) {
-      alert('נא להזין כתובת אימייל תקינה');
+      setStatus({ kind: 'error', message: 'נא להזין כתובת אימייל תקינה' });
       return;
     }
-    console.log('Lead captured:', form);
-    alert('הפרטים נשלחו בהצלחה! (נבדקו בקונסול)');
-    setForm({ name: '', email: '', phone: '', freeText: '' });
+
+    setSubmitting(true);
+    try {
+      await createContact({
+        FirstName: form.firstName,
+        LastName: form.lastName,
+        EMail: form.email,
+        PhoneNo: form.phone,
+        Address: '',
+        City: '',
+        Zipcode: '',
+        ContactListName: '',
+        CustomField1: form.freeText,
+        CustomField2: '',
+        CustomField3: '',
+        CustomField4: '',
+        CustomField5: '',
+      });
+      setStatus({ kind: 'success', message: 'הפרטים נשלחו בהצלחה!' });
+      setForm(initialForm);
+    } catch (err) {
+      setStatus({ kind: 'error', message: err.message || 'שליחה נכשלה. נסו שוב.' });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -35,20 +65,37 @@ export default function LeadForm() {
       <p className="text-sm text-gray-500 mb-6 text-center">נחזור אליכם בהקדם</p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="leadName" className="block text-sm font-medium text-gray-700 mb-1">
-            שם מלא <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="leadName"
-            name="name"
-            type="text"
-            value={form.name}
-            onChange={handleChange}
-            required
-            className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
-            placeholder="השם המלא שלך"
-          />
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label htmlFor="leadFirstName" className="block text-sm font-medium text-gray-700 mb-1">
+              שם פרטי <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="leadFirstName"
+              name="firstName"
+              type="text"
+              value={form.firstName}
+              onChange={handleChange}
+              required
+              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
+              placeholder="שם פרטי"
+            />
+          </div>
+          <div>
+            <label htmlFor="leadLastName" className="block text-sm font-medium text-gray-700 mb-1">
+              שם משפחה <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="leadLastName"
+              name="lastName"
+              type="text"
+              value={form.lastName}
+              onChange={handleChange}
+              required
+              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
+              placeholder="שם משפחה"
+            />
+          </div>
         </div>
 
         <div>
@@ -98,11 +145,24 @@ export default function LeadForm() {
           />
         </div>
 
+        {status && (
+          <div
+            className={`text-sm rounded-lg px-4 py-2.5 ${
+              status.kind === 'success'
+                ? 'bg-green-50 text-green-800 border border-green-200'
+                : 'bg-red-50 text-red-800 border border-red-200'
+            }`}
+          >
+            {status.message}
+          </div>
+        )}
+
         <button
           type="submit"
-          className="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3 rounded-lg transition-colors shadow-md"
+          disabled={submitting}
+          className="w-full bg-brand-600 hover:bg-brand-700 disabled:bg-brand-400 text-white font-semibold py-3 rounded-lg transition-colors shadow-md"
         >
-          שלח
+          {submitting ? 'שולח...' : 'שלח'}
         </button>
       </form>
     </div>

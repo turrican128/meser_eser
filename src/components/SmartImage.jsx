@@ -1,30 +1,28 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function SmartImage({ src, alt, className = '' }) {
-  const [status, setStatus] = useState('loading'); // loading | loaded | error
-  const statusRef = useRef(status);
+  const [state, setState] = useState(() => ({ src, status: src ? 'loading' : 'error' }));
+  const status = state.status;
+
+  if (state.src !== src) {
+    setState({ src, status: src ? 'loading' : 'error' });
+  }
 
   useEffect(() => {
-    statusRef.current = status;
-  }, [status]);
-
-  useEffect(() => {
-    if (!src) {
-      setStatus('error');
-      return;
-    }
-    setStatus('loading');
+    if (!src) return undefined;
 
     const img = new Image();
-    let timeoutId;
-
-    img.onload = () => setStatus('loaded');
-    img.onerror = () => setStatus('error');
+    img.onload = () =>
+      setState((prev) => (prev.src === src ? { ...prev, status: 'loaded' } : prev));
+    img.onerror = () =>
+      setState((prev) => (prev.src === src ? { ...prev, status: 'error' } : prev));
     img.src = src;
 
-    // If image takes longer than 15s, treat as error (AI generation is slow)
-    timeoutId = setTimeout(() => {
-      if (statusRef.current === 'loading') setStatus('error');
+    // AI image generation can be slow; treat >15s as failed.
+    const timeoutId = setTimeout(() => {
+      setState((prev) =>
+        prev.src === src && prev.status === 'loading' ? { ...prev, status: 'error' } : prev
+      );
     }, 15000);
 
     return () => clearTimeout(timeoutId);

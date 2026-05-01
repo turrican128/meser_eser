@@ -1,0 +1,15 @@
+{
+  "ContactListName": "Demo",
+  "FirstName": "רון",
+  "LastName": "לוי",
+  "EMail": "ron@example.com",
+  "PhoneNo": "054-1112233",
+  "Address": "דרך מנחם בגין 132",
+  "City": "תל אביב",
+  "Zipcode": "6701101",
+  "CustomField1": "ייעוץ טכנולוגי לסטארטאפים",
+  "CustomField2": "שירותי ייעוץ טכנולוגי לחברות סטארטאפ בתחילת דרכן: בחירת ארכיטקטורה, גיוס מהנדסים, סקירת קוד, ייעוץ DevOps וליווי שוטף לצוותי פיתוח.",
+  "CustomField3": "",
+  "CustomField4": "tech",
+  "CustomField5": "ron@techadvisor.co.il"
+}
