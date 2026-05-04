@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useContact } from '../hooks/useContact';
 import { expandText } from '../services/textExpander';
@@ -10,6 +11,12 @@ export default function LandingPage() {
   const [searchParams] = useSearchParams();
   const id = searchParams.get('id');
   const { contact, loading, error } = useContact(id);
+
+  const businessText = contact?.CustomField2 || '';
+  const expandedText = useMemo(
+    () => (businessText ? expandText(businessText) : null),
+    [businessText]
+  );
 
   if (!id) {
     return (
@@ -37,13 +44,11 @@ export default function LandingPage() {
   if (!contact) return <CenteredMessage title="לא נמצא" message="לא נמצא דף נחיתה למזהה הזה." />;
 
   const bannerName = contact.CustomField1 || '';
-  const businessText = contact.CustomField2 || '';
   const providedImageUrl = contact.CustomField3 || '';
   const imageCategory = contact.CustomField4 || 'default';
   const ownerEmail = contact.CustomField5 || contact.EMail || '';
   const ownerName = `${contact.FirstName || ''} ${contact.LastName || ''}`.trim();
 
-  const expandedText = businessText ? expandText(businessText) : null;
   const imageUrl =
     providedImageUrl || (businessText ? buildImageUrl(bannerName || businessText, imageCategory) : null);
 
@@ -71,7 +76,7 @@ export default function LandingPage() {
 
       <CtaBand cta={cta} />
 
-      <ContactSection cta={cta} ownerEmail={ownerEmail} />
+      <ContactSection cta={cta} ownerEmail={ownerEmail} bannerName={bannerName} />
 
       <SiteFooter ownerName={ownerName} />
     </div>
@@ -93,9 +98,9 @@ function SiteHeader({ bannerName, categoryLabel }) {
         </h2>
         <div
           className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-ink-500 font-medium hidden md:block"
-          dir="ltr"
+          dir={categoryLabel ? 'rtl' : 'ltr'}
         >
-          {categoryLabel ? '·' : '01 / 04'}
+          {categoryLabel || '01 / 04'}
         </div>
       </div>
     </header>
@@ -262,7 +267,7 @@ function CtaBand({ cta }) {
   );
 }
 
-function ContactSection({ cta, ownerEmail }) {
+function ContactSection({ cta, ownerEmail, bannerName }) {
   const promises = [
     'תגובה תוך 24 שעות',
     'ייעוץ ללא עלות וללא התחייבות',
@@ -321,7 +326,7 @@ function ContactSection({ cta, ownerEmail }) {
           </div>
 
           <div className="lg:col-span-5">
-            <LeadForm />
+            <LeadForm contactListName={bannerName} />
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ const initialForm = {
   freeText: '',
 };
 
-export default function LeadForm() {
+export default function LeadForm({ contactListName = '' }) {
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState(null);
@@ -43,7 +43,7 @@ export default function LeadForm() {
         Address: '',
         City: '',
         Zipcode: '',
-        ContactListName: '',
+        ContactListName: contactListName,
         CustomField1: form.freeText,
         CustomField2: '',
         CustomField3: '',
