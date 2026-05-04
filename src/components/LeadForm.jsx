@@ -12,7 +12,7 @@ const initialForm = {
 export default function LeadForm() {
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
-  const [status, setStatus] = useState(null); // { kind: 'success' | 'error', message: string }
+  const [status, setStatus] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,7 +50,7 @@ export default function LeadForm() {
         CustomField4: '',
         CustomField5: '',
       });
-      setStatus({ kind: 'success', message: 'הפרטים נשלחו בהצלחה!' });
+      setStatus({ kind: 'success', message: 'הפרטים נשלחו. נחזור אליכם בהקדם.' });
       setForm(initialForm);
     } catch (err) {
       setStatus({ kind: 'error', message: err.message || 'שליחה נכשלה. נסו שוב.' });
@@ -60,97 +60,79 @@ export default function LeadForm() {
   };
 
   return (
-    <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
-      <h3 className="text-xl font-bold text-brand-800 mb-2 text-center">השאירו פרטים</h3>
-      <p className="text-sm text-gray-500 mb-6 text-center">נחזור אליכם בהקדם</p>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label htmlFor="leadFirstName" className="block text-sm font-medium text-gray-700 mb-1">
-              שם פרטי <span className="text-red-500">*</span>
-            </label>
-            <input
-              id="leadFirstName"
-              name="firstName"
-              type="text"
-              value={form.firstName}
-              onChange={handleChange}
-              required
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
-              placeholder="שם פרטי"
-            />
-          </div>
-          <div>
-            <label htmlFor="leadLastName" className="block text-sm font-medium text-gray-700 mb-1">
-              שם משפחה <span className="text-red-500">*</span>
-            </label>
-            <input
-              id="leadLastName"
-              name="lastName"
-              type="text"
-              value={form.lastName}
-              onChange={handleChange}
-              required
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
-              placeholder="שם משפחה"
-            />
-          </div>
+    <div className="bg-cream-50 border border-line p-8 md:p-10">
+      <div className="mb-8">
+        <div
+          className="text-xs tracking-[0.3em] uppercase text-brand-700 mb-2 font-medium"
+          dir="ltr"
+        >
+          The form
         </div>
+        <h3 className="font-serif text-2xl md:text-3xl text-ink-900">השאירו פרטים</h3>
+      </div>
 
-        <div>
-          <label htmlFor="leadEmail" className="block text-sm font-medium text-gray-700 mb-1">
-            אימייל <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="leadEmail"
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-2 gap-5">
+          <Field
+            id="leadFirstName"
+            name="firstName"
+            label="שם פרטי"
             required
-            className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
-            placeholder="your@email.com"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="leadPhone" className="block text-sm font-medium text-gray-700 mb-1">
-            טלפון <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="leadPhone"
-            name="phone"
-            type="tel"
-            value={form.phone}
+            value={form.firstName}
             onChange={handleChange}
+            placeholder="שם פרטי"
+          />
+          <Field
+            id="leadLastName"
+            name="lastName"
+            label="שם משפחה"
             required
-            className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
-            placeholder="050-1234567"
+            value={form.lastName}
+            onChange={handleChange}
+            placeholder="שם משפחה"
           />
         </div>
 
-        <div>
-          <label htmlFor="leadFreeText" className="block text-sm font-medium text-gray-700 mb-1">
-            הודעה חופשית
-          </label>
-          <textarea
-            id="leadFreeText"
-            name="freeText"
-            rows={3}
-            value={form.freeText}
-            onChange={handleChange}
-            className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition resize-none"
-            placeholder="כתוב כאן כל הודעה או בקשה..."
-          />
-        </div>
+        <Field
+          id="leadEmail"
+          name="email"
+          type="email"
+          label="אימייל"
+          required
+          value={form.email}
+          onChange={handleChange}
+          placeholder="your@email.com"
+          dir="ltr"
+        />
+
+        <Field
+          id="leadPhone"
+          name="phone"
+          type="tel"
+          label="טלפון"
+          required
+          value={form.phone}
+          onChange={handleChange}
+          placeholder="050-1234567"
+          dir="ltr"
+        />
+
+        <Field
+          id="leadFreeText"
+          name="freeText"
+          label="הודעה (אופציונלי)"
+          value={form.freeText}
+          onChange={handleChange}
+          placeholder="כתוב כאן כל הודעה או בקשה..."
+          textarea
+        />
 
         {status && (
           <div
-            className={`text-sm rounded-lg px-4 py-2.5 ${
+            className={`text-sm px-4 py-3 border ${
               status.kind === 'success'
-                ? 'bg-green-50 text-green-800 border border-green-200'
-                : 'bg-red-50 text-red-800 border border-red-200'
+                ? 'bg-cream-100 text-ink-900 border-brand-300'
+                : 'bg-cream-100 text-brand-800 border-brand-400'
             }`}
           >
             {status.message}
@@ -160,11 +142,77 @@ export default function LeadForm() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full bg-brand-600 hover:bg-brand-700 disabled:bg-brand-400 text-white font-semibold py-3 rounded-lg transition-colors shadow-md"
+          className="group w-full bg-ink-900 hover:bg-brand-700 disabled:bg-ink-500 text-cream-50 px-8 py-4 transition-colors duration-300 flex items-center justify-center gap-3"
         >
-          {submitting ? 'שולח...' : 'שלח'}
+          <span className="text-sm font-medium tracking-wider">
+            {submitting ? 'שולח...' : 'שלח'}
+          </span>
+          {!submitting && (
+            <svg
+              className="w-4 h-4 transition-transform group-hover:-translate-x-1 rotate-180"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M5 10h10M10 5l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          )}
         </button>
       </form>
+    </div>
+  );
+}
+
+function Field({
+  id,
+  name,
+  type = 'text',
+  label,
+  required,
+  value,
+  onChange,
+  placeholder,
+  textarea,
+  dir,
+}) {
+  const inputCls =
+    'w-full bg-transparent border-0 border-b border-line focus:border-brand-600 focus:outline-none focus:ring-0 px-0 py-3 text-ink-900 placeholder:text-ink-300 transition-colors';
+
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="block text-[10px] tracking-[0.3em] uppercase text-ink-500 mb-2 font-medium"
+        dir="ltr"
+      >
+        {label}
+        {required && <span className="text-brand-600 ml-1">*</span>}
+      </label>
+      {textarea ? (
+        <textarea
+          id={id}
+          name={name}
+          rows={3}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          dir={dir}
+          className={`${inputCls} resize-none`}
+        />
+      ) : (
+        <input
+          id={id}
+          name={name}
+          type={type}
+          value={value}
+          onChange={onChange}
+          required={required}
+          placeholder={placeholder}
+          dir={dir}
+          className={inputCls}
+        />
+      )}
     </div>
   );
 }

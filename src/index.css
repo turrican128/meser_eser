@@ -1,20 +1,79 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-50: #f5f3ff;
-  --color-brand-100: #ede9fe;
-  --color-brand-200: #ddd6fe;
-  --color-brand-300: #c4b5fd;
-  --color-brand-400: #a78bfa;
-  --color-brand-500: #8b5cf6;
-  --color-brand-600: #7c3aed;
-  --color-brand-700: #6d28d9;
-  --color-brand-800: #5b21b6;
-  --color-brand-900: #4c1d95;
+  --font-sans: 'Heebo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Frank Ruhl Libre', 'Heebo', Georgia, serif;
+
+  --color-brand-50: #fdf5f1;
+  --color-brand-100: #f9e9e1;
+  --color-brand-200: #f1cdbf;
+  --color-brand-300: #e6a78f;
+  --color-brand-400: #d77860;
+  --color-brand-500: #c75a3f;
+  --color-brand-600: #b94e3a;
+  --color-brand-700: #9a3f30;
+  --color-brand-800: #7d3528;
+  --color-brand-900: #642b22;
+
+  --color-cream-50: #fdfaf6;
+  --color-cream-100: #fbf7f1;
+  --color-cream-200: #f5ede0;
+
+  --color-ink-900: #14110d;
+  --color-ink-700: #2d2925;
+  --color-ink-500: #6b665f;
+  --color-ink-300: #a8a29a;
+
+  --color-line: #e8e2d8;
 }
 
+html,
 body {
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-sans);
+  background-color: var(--color-cream-100);
+  color: var(--color-ink-900);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.fade-up {
+  animation: fade-up 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.fade-in {
+  animation: fade-in 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.draw-line {
+  transform-origin: right center;
+  animation: draw 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
