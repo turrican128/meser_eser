@@ -15,9 +15,11 @@ No test runner is configured.
 
 - `VITE_MESERESER_API_KEY` — required at runtime. Put it in `.env.local` (gitignored). See `.env.example`. The dev server must be restarted after editing `.env.local`.
 
-## Mock mode (dev only)
+## Mock mode
 
 Append `?mock=<demoName>` to any landing URL and `src/services/api.js` will skip the network and return the fixture from `src/json-input-demos/<demoName>.json`. `?mock=1` (without a name) loads the default demo (`DEFAULT_DEMO` in `src/json-input-demos/index.js`).
+
+Mock mode is **always on in `npm run dev`**. In production builds it's gated on `VITE_ALLOW_MOCK=1` — leave that var unset for real deployments (fixtures are tree-shaken out) and set it only on demo deploys that have no real CRM credentials yet.
 
 Examples:
 - `http://localhost:5173/landing?id=demo&mock=1` — default demo
