@@ -13,18 +13,26 @@ export class ApiConfigError extends Error {
   }
 }
 
+// Mock mode is allowed in dev always, and in production builds when the
+// VITE_ALLOW_MOCK env var is set to '1' (e.g., on a demo deploy that has no
+// real CRM credentials yet). Other production builds keep mocks fully out.
+function isMockAllowed() {
+  return Boolean(import.meta.env.DEV) || import.meta.env.VITE_ALLOW_MOCK === '1';
+}
+
 function getMockName() {
   if (typeof window === 'undefined') return null;
-  if (!import.meta.env.DEV) return null;
+  if (!isMockAllowed()) return null;
   const value = new URLSearchParams(window.location.search).get('mock');
   if (!value) return null;
   // ?mock=1 picks the default demo; ?mock=<name> picks that file.
   return value === '1' ? '' : value;
 }
 
-// Dynamic import keeps the json-input-demos folder out of production bundles.
+// Dynamic import keeps the json-input-demos folder out of bundles where
+// mocks are disallowed.
 async function loadMockContact(name) {
-  if (!import.meta.env.DEV) return null;
+  if (!isMockAllowed()) return null;
   const { getDemo } = await import('../json-input-demos/index.js');
   return getDemo(name);
 }
