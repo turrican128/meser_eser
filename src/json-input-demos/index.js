@@ -13,7 +13,11 @@ export const DEFAULT_DEMO = 'yoga';
 
 export function getDemo(name) {
   if (name && demos[name]) return demos[name];
-  return demos[DEFAULT_DEMO] ?? Object.values(demos)[0];
+  const fallback = demos[DEFAULT_DEMO] ?? Object.values(demos)[0];
+  if (!fallback) {
+    throw new Error('[mock] No demo files found in src/json-input-demos/');
+  }
+  return fallback;
 }
 
 export function listDemoNames() {

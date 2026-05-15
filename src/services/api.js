@@ -83,7 +83,8 @@ export async function createContact(payload) {
   if (mockName !== null) {
     await new Promise((r) => setTimeout(r, MOCK_LATENCY_MS));
     console.log('[mock] CreateContact payload:', payload);
-    return { ErrorCode: '0', Result: 'OK' };
+    return 'OK';
   }
-  return apiCall(CREATE_CONTACT_FN, payload);
+  const data = await apiCall(CREATE_CONTACT_FN, payload);
+  return data.Result;
 }
