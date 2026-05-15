@@ -32,6 +32,11 @@ export default function LeadForm({ contactListName = '' }) {
       setStatus({ kind: 'error', message: 'נא להזין כתובת אימייל תקינה' });
       return;
     }
+    const phoneRegex = /^0\d{1,2}-?\d{7}$/;
+    if (!phoneRegex.test(form.phone)) {
+      setStatus({ kind: 'error', message: 'נא להזין מספר טלפון תקין (10 ספרות, למשל 050-1234567)' });
+      return;
+    }
 
     setSubmitting(true);
     try {
